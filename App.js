@@ -1,11 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import ToDoForm from "./To_Do_Form";
 
 export default function App() {
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (taskText) => {
+    if (taskText.trim()) {
+      setTasks([...tasks, taskText.trim()]);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <ToDoForm addTask={addTask} />
+      <FlatList
+        data={tasks}
+        renderItem={({ item }) => <Text style={styles.taskItem}>{item}</Text>}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 }
@@ -13,8 +26,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+  taskItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    fontSize: 18,
   },
 });
